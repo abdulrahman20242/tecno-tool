@@ -617,6 +617,36 @@ class BypassTab(QWidget):
             self._rtimer.start(200)
 
 # ------------------------ Workers ------------------------
+class ImgSig(QObject):
+    loaded = pyqtSignal(str, QPixmap)
+
+class ImgWorker(QRunnable):
+    _cache = {}
+    def __init__(self, key):
+        super().__init__()
+        self.key = str(key)
+        self.sig = ImgSig()
+    @pyqtSlot()
+    def run(self):
+        try:
+            if self.key.startswith('http'):
+                url = self.key
+            else:
+                url = fetch_app_image_url(self.key)
+                if not url:
+                    return
+            if url in ImgWorker._cache:
+                self.sig.loaded.emit(self.key, ImgWorker._cache[url])
+                return
+            r = requests.get(url, timeout=10, verify=False)
+            if r.status_code == 200:
+                pix = QPixmap()
+                if pix.loadFromData(r.content):
+                    ImgWorker._cache[url] = pix
+                    self.sig.loaded.emit(self.key, pix)
+        except:
+            pass
+
 class DownloadSig(QObject):
     progress = pyqtSignal(int)
     status = pyqtSignal(str)
@@ -647,6 +677,9 @@ class DownloadWorker(QRunnable):
                 self.sig.finished.emit(True, str(self.dest_path))
         except Exception as e:
             self.sig.finished.emit(False, str(e))
+
+# ManifestWorker completely removed because it relied on polarservices.org
+# The AddTab no longer uses it; only drag-and-drop is available.
 
 class LibraryGameSig(QObject):
     loaded = pyqtSignal(str, QPixmap, str)
@@ -751,7 +784,6 @@ class AddTab(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        # Info label
         info = QLabel("Drag and drop a .lua file to add it to the library")
         info.setAlignment(Qt.AlignCenter)
         info.setStyleSheet("color: #a0a0b0; font-size: 14px; padding: 10px;")
