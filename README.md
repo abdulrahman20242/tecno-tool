@@ -246,7 +246,7 @@ python techno_tool.py
 | OS | Windows 10/11 |
 | Python | 3.8+ |
 | RAM | 512 MB |
-| Disk Space | 100 MB |
+| Disk Space | 43 MB |
 | Internet | Required for downloads |
 | Steam | Optional (for library features) |
 
