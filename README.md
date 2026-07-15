@@ -207,7 +207,7 @@ pip install PyQt5 requests
 ### Step 3: Run
 
 ```bash
-python techno_tool.py
+python techno-tool.py
 ```
 
 ---
